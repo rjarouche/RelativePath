@@ -18,7 +18,7 @@ export function activate(context: ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = commands.registerCommand("extension.relativePath", () => {
+    let disposable = commands.registerCommand("extension.jrelativePath", () => {
         // The code you place here will be executed every time your command is executed
 
         relativePath.findRelativePath();
@@ -217,6 +217,21 @@ class RelativePath {
                 });
             }
 
+            if (editor.document.languageId == "php" && targetPath.substr(-3, 3).toLocaleLowerCase() == "php") {
+                relativeUrl = "include '".concat(relativeUrl).concat("'");
+            } else {
+                if (editor.document.languageId == "php" || editor.document.languageId == "html") {
+
+                    if (targetPath.substr(-2, 2).toLocaleLowerCase() == "js") {
+                        relativeUrl = '<script type="text/javascript" src="'.concat(relativeUrl).concat('"></script>');
+                    }
+
+                    if (targetPath.substr(-3, 3).toLocaleLowerCase() == "css") {
+                        relativeUrl = '<link rel="stylesheet" type="text/css" href="'.concat(relativeUrl).concat('">');
+                    }
+
+                }
+            }
             window.activeTextEditor.edit(
                 (editBuilder: TextEditorEdit) => {
                     let position: Position = window.activeTextEditor.selection.end;
@@ -259,10 +274,10 @@ class RelativePath {
         // Don't filter on too many files. Show the input search box instead
         if (disableQuickFilter) {
             const placeHolder = `Found ${this._items.length} files. Enter the filter query. Consider adding more 'relativePath.ignore' settings.`;
-            const input = window.showInputBox({placeHolder});
+            const input = window.showInputBox({ placeHolder });
             input.then(val => {
                 if (val === undefined) {
-                    // User pressed 'Escape' 
+                    // User pressed 'Escape'
                     return;
                 }
 

@@ -1,10 +1,10 @@
 {
-    "name": "RelativePath",
+    "name": "jrelativepath",
     "description": "Get relative url paths from files in the current workspace.",
     "version": "1.4.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jakob101/RelativePath"
+        "url": "https://github.com/rjarouche/RelativePath"
     },
     "publisher": "jakob101",
     "galleryBanner": {
@@ -18,28 +18,28 @@
         "Other"
     ],
     "license": "MIT",
-    "displayName": "Relative Path",
+    "displayName": "jRelative Path",
     "activationEvents": [
-        "onCommand:extension.relativePath"
+        "onCommand:extension.jrelativePath"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.relativePath",
-                "title": "Relative Path"
+                "command": "extension.jrelativePath",
+                "title": "jRelative Path"
             }
         ],
         "keybindings": [
             {
-                "command": "extension.relativePath",
-                "key": "ctrl+shift+h",
-                "mac": "cmd+shift+h",
+                "command": "extension.jrelativePath",
+                "key": "ctrl+shift+q",
+                "mac": "cmd+shift+q",
                 "when": "editorTextFocus"
             }
         ],
         "configuration": {
-            "title": "RelativePath extension configuration",
+            "title": "jRelativePath extension configuration",
             "type": "object",
             "properties": {
                 "relativePath.ignore": {

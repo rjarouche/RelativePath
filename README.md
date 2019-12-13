@@ -1,15 +1,21 @@
 ## Relative path support for Visual Studio Code
 Now you can get the relative path to any file in the workspace.
 
-Just press `Ctrl+Shift+H` (Mac: `Cmd+Shift+H`) and select a file. If your workspace has more than 1000 files, you will be prompted to filter that list first.
-Alternatively, you can press open command palette `F1` and search for `Relative Path`.
+Just press `Ctrl+Shift+q` (Mac: `Cmd+Shift+q`) and select a file. If your workspace has more than 1000 files, you will be prompted to filter that list first.
+Alternatively, you can press open command palette `F1` and search for `jRelative Path`.
 
 ![GIF](https://media.giphy.com/media/3oEduJ5iRksPxpwoXC/giphy.gif)
 
-## How to use
-First, you will need to install Visual Studio Code. In the command palette (`Ctrl-Shift-P` or `Cmd-Shift-P`) select `Install Extension` and choose `RelativePath`.
-
 ## Important
+This is a fork from [https://github.com/jakob101/RelativePath](https://github.com/jakob101/RelativePath).
+Now when you are on a PHP or HTML file the path will be in this format
+<link rel="stylesheet" type="text/css" href="path-to-css-file.css">
+<script type="text/javascript" src="path-to-javascript-file.js"></script>
+include 'path-to-php.file'
+Other files still in the original behavior
+
+
+## Important 2
 
 ### In Multi root workspaces:
 
@@ -40,9 +46,7 @@ The following Visual Studio Code settings are available for the RelativePath ext
 		".js"
 	],
 ```
-
-## Bugs
-Report them [here](https://github.com/jakob101/RelativePath).
+## Special thanks to jakob101
 
 ## Licence
 [MIT](https://github.com/Microsoft/vscode-go/blob/master/LICENSE)
