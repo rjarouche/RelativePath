@@ -60,6 +60,11 @@
                     "default": false,
                     "description": "Excludes the extension from the relative path url (Useful for systemjs imports)."
                 },
+                "relativePath.useInclude": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Uses de include sintax instead the simple path"
+              },
                 "relativePath.excludedExtensions": {
                     "type": "array",
                     "default": [

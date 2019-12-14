@@ -1,10 +1,20 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import {
-    window, workspace, commands, Disposable,
-    ExtensionContext, StatusBarAlignment, StatusBarItem,
-    TextDocument, QuickPickItem, FileSystemWatcher, Uri,
-    TextEditorEdit, TextEditor, Position
+    window,
+    workspace,
+    commands,
+    Disposable,
+    ExtensionContext,
+    StatusBarAlignment,
+    StatusBarItem,
+    TextDocument,
+    QuickPickItem,
+    FileSystemWatcher,
+    Uri,
+    TextEditorEdit,
+    TextEditor,
+    Position
 } from 'vscode';
 
 import * as path from "path";
@@ -98,8 +108,9 @@ class RelativePath {
                 this._myGlob.resume();
             }
         } else {
-            this._myGlob = new Glob(this._workspacePath + "/**/*.*",
-                { ignore: this._configuration.get("ignore") },
+            this._myGlob = new Glob(this._workspacePath + "/**/*.*", {
+                ignore: this._configuration.get("ignore")
+            },
                 (err, files) => {
                     if (err) {
                         return;
@@ -118,10 +129,16 @@ class RelativePath {
 
     // Go through workspace to cache files
     private searchWorkspace(skipOpen = false) {
-        let emptyItem: QuickPickItem = { label: "", description: "No files found" };
+        let emptyItem: QuickPickItem = {
+            label: "",
+            description: "No files found"
+        };
 
         // Show loading info box
-        let info = window.showQuickPick([emptyItem], { matchOnDescription: false, placeHolder: "Finding files... Please wait. (Press escape to cancel)" });
+        let info = window.showQuickPick([emptyItem], {
+            matchOnDescription: false,
+            placeHolder: "Finding files... Please wait. (Press escape to cancel)"
+        });
         info.then(
             (value?: any) => {
                 if (this._myGlob) {
@@ -172,12 +189,18 @@ class RelativePath {
     private showQuickPick(items: string[], editor: TextEditor): void {
         if (items) {
             let paths: QuickPickItem[] = items.map((val: string) => {
-                let item: QuickPickItem = { description: val.replace(this._workspacePath, ""), label: val.split("/").pop() };
+                let item: QuickPickItem = {
+                    description: val.replace(this._workspacePath, ""),
+                    label: val.split("/").pop()
+                };
                 return item;
             });
 
             let pickResult: Thenable<QuickPickItem>;
-            pickResult = window.showQuickPick(paths, { matchOnDescription: true, placeHolder: `Type to filter ${items.length} files` });
+            pickResult = window.showQuickPick(paths, {
+                matchOnDescription: true,
+                placeHolder: `Type to filter ${items.length} files`
+            });
             pickResult.then((item: QuickPickItem) => this.returnRelativeLink(item, editor));
         } else {
             window.showInformationMessage("No files to show.");
@@ -211,34 +234,92 @@ class RelativePath {
                 relativeUrl = relativeUrl.substring(2, relativeUrl.length);
             }
 
+
+
             if (this._configuration.omitParts) {
                 this._configuration.omitParts.forEach(omitRegexp => {
                     relativeUrl = relativeUrl.replace(new RegExp(omitRegexp), '');
                 });
             }
 
-            if (editor.document.languageId == "php" && targetPath.substr(-3, 3).toLocaleLowerCase() == "php") {
-                relativeUrl = "include '".concat(relativeUrl).concat("'");
+            if (this._configuration.useInclude) {
+
+                let extTarget = targetPath.split(".").pop().toLocaleLowerCase();
+
+                if (editor.document.languageId == "php" && extTarget == "php") {
+                    //relativeUrl = "include '" + relativeUrl + "';";
+                    let items: QuickPickItem[] = [{
+                        label: "include '" + relativeUrl + "';",
+                        description: "include '" + relativeUrl + "';"
+                    },
+                    {
+                        label: "include_once '" + relativeUrl + "';",
+                        description: "include '" + relativeUrl + "';"
+                    },
+                    {
+                        label: "require '" + relativeUrl + "';",
+                        description: "require '" + relativeUrl + "';"
+                    },
+                    {
+                        label: "require_once '" + relativeUrl + "';",
+                        description: "require '" + relativeUrl + "';"
+                    }
+                    ];
+
+
+                    let pickResult: Thenable<QuickPickItem>;
+                    pickResult = window.showQuickPick(items);
+
+                    pickResult.then(selection => {
+                        // the user canceled the selection
+                        if (!selection) {
+                            return;
+                        }
+                        this.writePathEditor(selection.label);
+
+                    });
+
+
+
+                } else {
+                    if (editor.document.languageId == "php" || editor.document.languageId == "html") {
+
+                        if (extTarget == "js") {
+                            relativeUrl = '<script type="text/javascript" src="' + relativeUrl + '"></script>';
+                        }
+
+                        if (extTarget == "css") {
+                            relativeUrl = '<link rel="stylesheet" type="text/css" href="' + relativeUrl + '">';
+                        }
+
+                    } else if (editor.document.languageId == "css" && extTarget == "css") {
+
+                        relativeUrl = "@import '" + relativeUrl + "'";
+
+                    }
+
+                    this.writePathEditor(relativeUrl);
+
+                }
             } else {
-                if (editor.document.languageId == "php" || editor.document.languageId == "html") {
-
-                    if (targetPath.substr(-2, 2).toLocaleLowerCase() == "js") {
-                        relativeUrl = '<script type="text/javascript" src="'.concat(relativeUrl).concat('"></script>');
-                    }
-
-                    if (targetPath.substr(-3, 3).toLocaleLowerCase() == "css") {
-                        relativeUrl = '<link rel="stylesheet" type="text/css" href="'.concat(relativeUrl).concat('">');
-                    }
-
-                }
+                this.writePathEditor(relativeUrl);
             }
-            window.activeTextEditor.edit(
-                (editBuilder: TextEditorEdit) => {
-                    let position: Position = window.activeTextEditor.selection.end;
-                    editBuilder.insert(position, relativeUrl);
-                }
-            );
+
+            //window.activeTextEditor.document.getText();
+            //window.activeTextEditor.document.
+
+
+
         }
+    }
+
+    private writePathEditor(relativeUrl: string) {
+        window.activeTextEditor.edit(
+            (editBuilder: TextEditorEdit) => {
+                let position: Position = window.activeTextEditor.selection.end;
+                editBuilder.insert(position, relativeUrl);
+            }
+        );
     }
 
     public findRelativePath() {
@@ -266,15 +347,16 @@ class RelativePath {
 
         if (extendedLimit && this._items.length <= extendedLimit) {
             disableQuickFilter = false;
-        }
-        else if (this._items.length <= 1000) {
+        } else if (this._items.length <= 1000) {
             disableQuickFilter = false;
         }
 
         // Don't filter on too many files. Show the input search box instead
         if (disableQuickFilter) {
             const placeHolder = `Found ${this._items.length} files. Enter the filter query. Consider adding more 'relativePath.ignore' settings.`;
-            const input = window.showInputBox({ placeHolder });
+            const input = window.showInputBox({
+                placeHolder
+            });
             input.then(val => {
                 if (val === undefined) {
                     // User pressed 'Escape'
