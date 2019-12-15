@@ -295,7 +295,7 @@ class RelativePath {
 
                     } else if (editor.document.languageId == "css" && extTarget == "css") {
 
-                        relativeUrl = "@import '" + relativeUrl + "'";
+                        relativeUrl = "@import '" + relativeUrl + "';";
                         this.writePathEditorFl(relativeUrl);
 
                     }else{
