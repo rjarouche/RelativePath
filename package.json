@@ -1,10 +1,10 @@
 {
     "name": "jrelativepath",
-    "description": "Get relative url paths from files in the current workspace.",
+    "description": "Get relative url paths from files in the current workspace with some extras",
     "version": "1.4.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/rjarouche/RelativePath"
+        "url": "https://github.com/rjarouche/jRelativePath"
     },
     "publisher": "Jarouche",
     "galleryBanner": {
@@ -88,7 +88,7 @@
             }
         }
     },
-    "icon": "icon.png",
+    "icon": "ico.png",
     "keywords": [
         "relative",
         "path",

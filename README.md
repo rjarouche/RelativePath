@@ -7,13 +7,15 @@ Alternatively, you can press open command palette `F1` and search for `jRelative
 ![GIF](https://media.giphy.com/media/3oEduJ5iRksPxpwoXC/giphy.gif)
 
 ## Important
+![]("ico.png")
+
 This is a fork from [https://github.com/jakob101/RelativePath](https://github.com/jakob101/RelativePath).
 Now when you are on a PHP or HTML file the path will be in this format
 <link rel="stylesheet" type="text/css" href="path-to-css-file.css">
 <script type="text/javascript" src="path-to-javascript-file.js"></script>
 include 'path-to-php.file'
 Other files still in the original behavior
-
+If you want to come back to original behavior in all cases set the "relativePath.useInclude" : false in settings.json 
 
 ## Important 2
 
@@ -46,7 +48,7 @@ The following Visual Studio Code settings are available for the RelativePath ext
 		".js"
 	],
 ```
-## Special thanks to jakob101
+## Special thanks to [jakob101](https://github.com/jakob101/)
 
 ## Licence
 [MIT](https://github.com/Microsoft/vscode-go/blob/master/LICENSE)
