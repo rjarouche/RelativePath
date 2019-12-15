@@ -291,14 +291,18 @@ class RelativePath {
                         if (extTarget == "css") {
                             relativeUrl = '<link rel="stylesheet" type="text/css" href="' + relativeUrl + '">';
                         }
+                        this.writePathEditor(relativeUrl);
 
                     } else if (editor.document.languageId == "css" && extTarget == "css") {
 
                         relativeUrl = "@import '" + relativeUrl + "'";
+                        this.writePathEditorFl(relativeUrl);
 
+                    }else{
+                        this.writePathEditor(relativeUrl);
                     }
 
-                    this.writePathEditor(relativeUrl);
+
 
                 }
             } else {
@@ -318,6 +322,15 @@ class RelativePath {
             (editBuilder: TextEditorEdit) => {
                 let position: Position = window.activeTextEditor.selection.end;
                 editBuilder.insert(position, relativeUrl);
+            }
+        );
+    }
+
+    private writePathEditorFl(relativeUrl: string) {
+        window.activeTextEditor.edit(
+            (editBuilder: TextEditorEdit) => {
+                let position: Position = new Position(0,0);
+                editBuilder.insert(position, relativeUrl + '\n');
             }
         );
     }
