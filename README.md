@@ -7,7 +7,7 @@ Alternatively, you can press open command palette `F1` and search for `jRelative
 ![GIF](https://media.giphy.com/media/3oEduJ5iRksPxpwoXC/giphy.gif)
 
 ## Important
-![]("ico.png")
+![](ico.png)
 
 This is a fork from [https://github.com/jakob101/RelativePath](https://github.com/jakob101/RelativePath).
 Now when you are on a PHP or HTML file the path will be in this format
