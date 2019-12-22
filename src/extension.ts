@@ -51,7 +51,7 @@ class RelativePath {
         this._items = null;
         this._pausedSearch = null;
         this._myGlob = null;
-        this._workspacePath = this.getWorkspaceFolder();
+        this._workspacePath = this.getWorkspaceFolder1();
         this._configuration = workspace.getConfiguration("relativePath");
 
         this.initializeWatcher();
@@ -72,7 +72,7 @@ class RelativePath {
         // on change active text editor refresh the cache
         // if the workspace folder has changed
         window.onDidChangeActiveTextEditor((e: TextEditor) => {
-            const currentWorkspacePath = this.getWorkspaceFolder();
+            const currentWorkspacePath = this.getWorkspaceFolder1();
             if (this._workspacePath !== currentWorkspacePath) {
                 this._workspacePath = currentWorkspacePath;
 
@@ -91,12 +91,14 @@ class RelativePath {
             }
         });
     }
-    private getWorkspaceFolder(): string {
+    private getWorkspaceFolder1(): string {
         const editor = window.activeTextEditor;
         if (editor) {
             const res = editor.document.uri;
             const folder = workspace.getWorkspaceFolder(res);
-            return folder.uri.fsPath.replace(/\\/g, "/");
+            if(folder){
+                return folder.uri.fsPath.replace(/\\/g, "/");
+            }
         }
     }
     // Purely updates the files
