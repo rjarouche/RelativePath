@@ -9,16 +9,16 @@ This is a fork from [https://github.com/jakob101/RelativePath](https://github.co
 ##Now when you are on a PHP,HTML or CSS file the path will be in this format
 
 ### If PHP or HTML including CSS
-<link rel="stylesheet" type="text/css" href="path-to-css-file.css">
+`<link rel="stylesheet" type="text/css" href="path-to-css-file.css">`
 
 ### If PHP or HTML including JS
-<script type="text/javascript" src="path-to-javascript-file.js"></script>
+`<script type="text/javascript" src="path-to-javascript-file.js"></script>`
 
 ### If PHP or HTML including PHP
-include/require/require_once/inclue_once 'path-to-php.file'
+`include/require/require_once/inclue_once 'path-to-php.file'`
 
 ### If CSS including CSS
-@import 'path-to-php.file'
+`@import 'path-to-php.file'`
 
 
 
